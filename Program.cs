@@ -6,7 +6,7 @@ namespace ninety_six_simulator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hello Ninety-Six Simulator!");
         }
     }
 }
