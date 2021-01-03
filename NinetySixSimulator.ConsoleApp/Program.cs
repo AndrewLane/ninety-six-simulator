@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ninety_six_simulator
+namespace NinetySixSimulator.ConsoleApp
 {
     class Program
     {
