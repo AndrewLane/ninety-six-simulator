@@ -15,16 +15,16 @@ namespace NinetySixSimulator.ConsoleApp
                 switch (card.Rank)
                 {
                     case "A":
-                        totalPoints += 1;
+                        totalPoints += 5;
                         break;
                     case "K":
-                        totalPoints += 2;
-                        break;
-                    case "Q":
                         totalPoints += 3;
                         break;
+                    case "Q":
+                        totalPoints += 2;
+                        break;
                     case "J":
-                        totalPoints += 5;
+                        totalPoints += 1;
                         break;
 
                 }
