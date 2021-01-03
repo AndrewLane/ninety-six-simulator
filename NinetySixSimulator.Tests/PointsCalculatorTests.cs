@@ -41,5 +41,19 @@ namespace NinetySixSimulator.Tests
             var result = objectUnderTest.GetPoints(entireDeck.Cards);
             Assert.True(result == 96);
         }
+
+        /// <summary>
+        /// A couple cards gets 2 base points but add a bonus point on to get 3 total.
+        /// </summary>
+        [Fact]
+        public void TwoCardsWithABonusCardTest()
+        {
+            var objectUnderTest = new PointsCalculator();
+            var result = objectUnderTest.GetPoints(new List<Card> {
+                new Card { Rank = "2", Suit = Constants.Suits.Clubs },
+                new Card { Rank = "J", Suit = Constants.Suits.Clubs }
+            });
+            Assert.True(result == 3);
+        }
     }
 }
