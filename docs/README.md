@@ -21,7 +21,7 @@
 * Measures how long it takes to get a double war with 4 aces and one with 4 twos (also including how many happen in the span of games)
 * Measures how many times someone has 4 aces at the end of the game (and if they win or lose - maybe?)
 
-Programming language: Csharp with Console Application
+Programming language: C# with Console Application
 
 ## Estimates for how many lines of code:
 * Andy: 1500
