@@ -26,7 +26,6 @@ namespace NinetySixSimulator.ConsoleApp
                     case "J":
                         totalPoints += 1;
                         break;
-
                 }
             }
             return totalPoints;

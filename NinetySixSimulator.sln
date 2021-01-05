@@ -1,11 +1,15 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinetySixSimulator.ConsoleApp", "NinetySixSimulator.ConsoleApp\ninety-six-simulator.csproj", "{208E68F5-08F9-4575-89E6-D14CF87CF28C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ninety-six-simulator", "NinetySixSimulator.ConsoleApp\ninety-six-simulator.csproj", "{208E68F5-08F9-4575-89E6-D14CF87CF28C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinetySixSimulator.Tests", "NinetySixSimulator.Tests\NinetySixSimulator.Tests.csproj", "{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NinetySixSimulator.Tests", "NinetySixSimulator.Tests\NinetySixSimulator.Tests.csproj", "{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{732F0C44-1012-4098-88AC-DF72ADCE1721}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{208E68F5-08F9-4575-89E6-D14CF87CF28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +45,11 @@ Global
 		{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}.Release|x64.Build.0 = Release|Any CPU
 		{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}.Release|x86.ActiveCfg = Release|Any CPU
 		{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BFE583BA-4DB0-43CD-B283-B852708C10A9}
 	EndGlobalSection
 EndGlobal
