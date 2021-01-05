@@ -11,18 +11,12 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Install dotnet-format
-        run: dotnet tool install -g dotnet-format --version 3.3.111304
+        run: dotnet tool install -g dotnet-format
 
       - name: Run dotnet format
-        id: format
-        uses: xt0rted/dotnet-format@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          action: "fix"
-          only-changed-files: false
+        run: dotnet-format
       
       - name: Commit files
-        if: steps.format.outputs.has-changes == 'true'
         uses: EndBug/add-and-commit@v4
         with:
           author_name: Github Actions
