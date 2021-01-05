@@ -1,6 +1,6 @@
-﻿using NinetySixSimulator.ConsoleApp.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using NinetySixSimulator.ConsoleApp.Models;
 
 namespace NinetySixSimulator.ConsoleApp
 {
