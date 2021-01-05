@@ -20,7 +20,6 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: "fix"
           only-changed-files: false
-          folder: "."
       
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
