@@ -11,7 +11,7 @@ namespace NinetySixSimulator.Tests
         public void CardEqualityTest()
         {
             var tenOfClubs = new Card { Rank = "T", Suit = Constants.Suits.Clubs };
-            var tenOfHearts = new Card { Rank = "T", Suit = Constants.Suits.Hearts };           
+            var tenOfHearts = new Card { Rank = "T", Suit = Constants.Suits.Hearts };
             Assert.True(tenOfClubs == tenOfHearts);
         }
 
@@ -42,7 +42,7 @@ namespace NinetySixSimulator.Tests
                 new Card { Rank = "K", Suit = Constants.Suits.Clubs },
                 new Card { Rank = "A", Suit = Constants.Suits.Clubs }
             };
-            for (int i=0; i<ascendingArray.Count - 1; i++)
+            for (int i = 0; i < ascendingArray.Count - 1; i++)
             {
                 Assert.True(ascendingArray[i] < ascendingArray[i + 1]);
                 Assert.True(ascendingArray[i + 1] > ascendingArray[i]);
