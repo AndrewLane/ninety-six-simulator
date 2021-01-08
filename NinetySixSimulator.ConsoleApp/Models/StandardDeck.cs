@@ -13,12 +13,12 @@ namespace NinetySixSimulator.ConsoleApp.Models
             {
                 foreach (var suit in suits)
                 {
-                    Cards.Add(new Card { Rank = translateNumberToRank(i), Suit = suit });
+                    Cards.Add(new Card { Rank = TranslateNumberToRank(i), Suit = suit });
                 }
             }
         }
 
-        private string translateNumberToRank(int number)
+        private static string TranslateNumberToRank(int number)
         {
             if (number < 2)
             {
@@ -28,16 +28,13 @@ namespace NinetySixSimulator.ConsoleApp.Models
             {
                 return number.ToString();
             }
-            switch (number)
+            return number switch
             {
-                case 10:
-                    return "T";
-                case 11:
-                    return "J";
-                case 12:
-                    return "Q";
-            }
-            return "K";
+                10 => "T",
+                11 => "J",
+                12 => "Q",
+                _ => "K",
+            };
         }
     }
 }
