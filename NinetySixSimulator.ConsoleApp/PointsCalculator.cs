@@ -8,7 +8,7 @@ namespace NinetySixSimulator.ConsoleApp
     {
         public int GetPoints(List<Card> cards)
         {
-            int totalPoints = cards.Count();
+            int totalPoints = cards.Count;
 
             foreach (var card in cards)
             {
