@@ -19,6 +19,7 @@ namespace NinetySixSimulator.ConsoleApp
             public static readonly TimeSpan TimeToCountScore = TimeSpan.FromSeconds(60);
             public static readonly TimeSpan TimeToPlayCardsFaceDownForAWar = TimeSpan.FromSeconds(3);
             public static readonly TimeSpan TimeToDeal = TimeSpan.FromSeconds(26);
+            public static readonly TimeSpan TimeToGatherCards = TimeSpan.FromSeconds(2);
         }
 
         public const int NumberOfFaceDownCardsForWar = 3;
