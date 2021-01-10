@@ -4,6 +4,7 @@
 * Deal: 26 sec.
 * Play Card: 1 sec.
 * War: 3 sec.
+* Gathering Cards After Cards Played: 2 sec.
 * Counting Points: 60 sec.
 * Play Game: 24 hours a day
 * Game lasts 5 to 10 minutes
