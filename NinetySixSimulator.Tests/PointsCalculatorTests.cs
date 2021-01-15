@@ -38,7 +38,7 @@ namespace NinetySixSimulator.Tests
         {
             var objectUnderTest = new PointsCalculator();
             var entireDeck = new StandardDeck();
-            var result = objectUnderTest.GetPoints(entireDeck.Cards);
+            var result = objectUnderTest.GetPoints(entireDeck.Cards.Cards);
             Assert.True(result == 96);
         }
 

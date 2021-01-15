@@ -4,7 +4,7 @@ namespace NinetySixSimulator.ConsoleApp.Models
 {
     public class StandardDeck
     {
-        public List<Card> Cards { get; private set; } = new List<Card>();
+        public CardPile Cards { get; private set; } = new CardPile();
 
         public StandardDeck()
         {
@@ -13,7 +13,7 @@ namespace NinetySixSimulator.ConsoleApp.Models
             {
                 foreach (var suit in suits)
                 {
-                    Cards.Add(new Card { Rank = TranslateNumberToRank(i), Suit = suit });
+                    Cards.Cards.Add(new Card { Rank = TranslateNumberToRank(i), Suit = suit });
                 }
             }
         }
