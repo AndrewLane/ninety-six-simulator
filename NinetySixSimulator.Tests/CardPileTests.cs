@@ -54,7 +54,7 @@ namespace NinetySixSimulator.Tests
         private static string cardPileRepresentation(CardPile cards)
         {
             var str = new StringBuilder();
-            foreach(var card in cards.Cards)
+            foreach (var card in cards.Cards)
             {
                 str.Append(card.ToString());
             }
