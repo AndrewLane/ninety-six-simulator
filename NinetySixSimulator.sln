@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{EC96D552-8
 		docs\README.md = docs\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinetySixSimulator.Services", "NinetySixSimulator.Services\NinetySixSimulator.Services.csproj", "{F3B59951-1ABC-4874-86E6-59D67F5653AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,18 @@ Global
 		{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}.Release|x64.Build.0 = Release|Any CPU
 		{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}.Release|x86.ActiveCfg = Release|Any CPU
 		{4C494A8C-67B8-4C80-8DF5-2A2C04B6EE8D}.Release|x86.Build.0 = Release|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Debug|x64.Build.0 = Debug|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Debug|x86.Build.0 = Debug|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Release|x64.ActiveCfg = Release|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Release|x64.Build.0 = Release|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Release|x86.ActiveCfg = Release|Any CPU
+		{F3B59951-1ABC-4874-86E6-59D67F5653AA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

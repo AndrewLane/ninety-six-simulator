@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NinetySixSimulator.ConsoleApp.Models
+namespace NinetySixSimulator.Services.Models
 {
     public class Card
     {

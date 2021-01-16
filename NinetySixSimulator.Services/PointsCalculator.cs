@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NinetySixSimulator.ConsoleApp.Models;
+using NinetySixSimulator.Services.Models;
 
-namespace NinetySixSimulator.ConsoleApp
+namespace NinetySixSimulator.Services
 {
     public class PointsCalculator
     {

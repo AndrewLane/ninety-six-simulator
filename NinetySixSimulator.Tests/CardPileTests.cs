@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using NinetySixSimulator.ConsoleApp;
-using NinetySixSimulator.ConsoleApp.Models;
+using NinetySixSimulator.Services;
+using NinetySixSimulator.Services.Models;
 using Xunit;
 
 namespace NinetySixSimulator.Tests
