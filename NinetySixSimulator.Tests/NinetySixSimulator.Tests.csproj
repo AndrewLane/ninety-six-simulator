@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NinetySixSimulator.ConsoleApp\ninety-six-simulator.csproj" />
+    <ProjectReference Include="..\NinetySixSimulator.Services\NinetySixSimulator.Services.csproj" />
   </ItemGroup>
 
 </Project>

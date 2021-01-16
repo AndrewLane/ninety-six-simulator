@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NinetySixSimulator.ConsoleApp.Models
+namespace NinetySixSimulator.Services.Models
 {
     public class CardPile
     {
