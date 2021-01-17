@@ -24,5 +24,12 @@ namespace NinetySixSimulator.Services.Models
                 Cards[n] = value;
             }
         }
+
+        public Card Draw()
+        {
+            var card = Cards[0];
+            Cards.RemoveAt(0);
+            return card;
+        }
     }
 }

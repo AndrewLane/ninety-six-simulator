@@ -51,6 +51,21 @@ namespace NinetySixSimulator.Tests
             Assert.True(allStates.Count == 6);
         }
 
+        [Fact]
+        public void TestDraw()
+        {
+            var objectUnderTest = new CardPile
+            {
+                Cards = new List<Card> {
+                    new Card {Rank = "2", Suit = Constants.Suits.Clubs },
+                    new Card {Rank = "2", Suit = Constants.Suits.Spades }
+                }
+            };
+            var result = objectUnderTest.Draw();
+            Assert.True(objectUnderTest.Cards.Count == 1);
+            Assert.True(result.Rank == "2" && result.Suit == Constants.Suits.Clubs);
+        }
+
         private static string cardPileRepresentation(CardPile cards)
         {
             var str = new StringBuilder();
