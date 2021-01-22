@@ -27,7 +27,7 @@ namespace NinetySixSimulator.Tests
             //make sure all cards are accounted for
             var allCards = gameState.FirstPlayerState.PlayPile.Cards.Concat(gameState.SecondPlayerState.PlayPile.Cards);
 
-            foreach(var suit in new List<string> { Constants.Suits.Clubs, Constants.Suits.Diamonds, Constants.Suits.Hearts, Constants.Suits.Spades })
+            foreach (var suit in new List<string> { Constants.Suits.Clubs, Constants.Suits.Diamonds, Constants.Suits.Hearts, Constants.Suits.Spades })
             {
                 foreach (var rank in new List<string> { "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A" })
                 {
