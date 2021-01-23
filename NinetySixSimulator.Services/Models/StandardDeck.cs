@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace NinetySixSimulator.Services.Models
+﻿namespace NinetySixSimulator.Services.Models
 {
     public class StandardDeck
     {

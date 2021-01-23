@@ -15,8 +15,8 @@ namespace NinetySixSimulator.Tests
             var gameStateTracker = new TrackIndividualGameState();
             var gameState = gameStateTracker.InitializeGameState();
 
-            playerGameStateInitializationAssertions(gameState.FirstPlayerState);
-            playerGameStateInitializationAssertions(gameState.SecondPlayerState);
+            PlayerGameStateInitializationAssertions(gameState.FirstPlayerState);
+            PlayerGameStateInitializationAssertions(gameState.SecondPlayerState);
 
             Assert.True(gameState.TimedOut == false);
             Assert.True(gameState.TimeElapsed == Constants.GamePlayParameters.TimeToShuffle + Constants.GamePlayParameters.TimeToDeal);
@@ -47,7 +47,7 @@ namespace NinetySixSimulator.Tests
             Assert.True(gameState.TimedOut == true);
         }
 
-        private static void playerGameStateInitializationAssertions(PlayerGameState playerGameState)
+        private static void PlayerGameStateInitializationAssertions(PlayerGameState playerGameState)
         {
             Assert.True(playerGameState.CannotContinueBecauseCantPlayEnoughCardsForWar == false);
             Assert.True(playerGameState.GatherPile.Cards.Count == 0);
