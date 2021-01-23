@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NinetySixSimulator.Services.Models;
 
+[assembly: InternalsVisibleTo("NinetySixSimulator.Tests")]
+[assembly: InternalsVisibleTo("ninety-six-simulator")]
 namespace NinetySixSimulator.Services
 {
     internal class PlayWar : IPlayWar
