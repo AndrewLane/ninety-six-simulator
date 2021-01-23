@@ -13,13 +13,13 @@ namespace NinetySixSimulator.Tests
         {
             HashSet<string> allStates = new HashSet<string>();
             var objectUnderTest = new StandardDeck().Cards;
-            var initialState = cardPileRepresentation(objectUnderTest);
+            var initialState = CardPileRepresentation(objectUnderTest);
             allStates.Add(initialState);
             int numberOfShuffles = 1000;
             for (int i = 0; i < numberOfShuffles; i++)
             {
                 objectUnderTest.Shuffle();
-                allStates.Add(cardPileRepresentation(objectUnderTest));
+                allStates.Add(CardPileRepresentation(objectUnderTest));
             }
 
             //make sure that we never ever see the deck in a state we've seen before after we shuffle
@@ -38,13 +38,13 @@ namespace NinetySixSimulator.Tests
                     new Card {Rank = "2", Suit = Constants.Suits.Hearts }
                 }
             };
-            var initialState = cardPileRepresentation(objectUnderTest);
+            var initialState = CardPileRepresentation(objectUnderTest);
             allStates.Add(initialState);
             int numberOfShuffles = 10000;
             for (int i = 0; i < numberOfShuffles; i++)
             {
                 objectUnderTest.Shuffle();
-                allStates.Add(cardPileRepresentation(objectUnderTest));
+                allStates.Add(CardPileRepresentation(objectUnderTest));
             }
 
             //with that many shuffles, we should see all 6 possible states that 3 cards can be in
@@ -66,7 +66,7 @@ namespace NinetySixSimulator.Tests
             Assert.True(result.Rank == "2" && result.Suit == Constants.Suits.Clubs);
         }
 
-        private static string cardPileRepresentation(CardPile cards)
+        private static string CardPileRepresentation(CardPile cards)
         {
             var str = new StringBuilder();
             foreach (var card in cards.Cards)
