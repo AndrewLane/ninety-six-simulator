@@ -36,8 +36,8 @@ namespace NinetySixSimulator.Services
                     state.Tick(Constants.GamePlayParameters.TimeToShuffle);
                 }
 
-                if (PlayerHasEnoughCardsForWar(state.FirstPlayerState, firstPlayerFacedownCardsAlready) 
-                    && PlayerHasEnoughCardsForWar(state.SecondPlayerState, secondPlayerFacedownCardsAlready))
+                if (PlayerHasEnoughCardsForWar(state.FirstPlayerState, firstPlayerFacedownCardsAlready) &&
+                    PlayerHasEnoughCardsForWar(state.SecondPlayerState, secondPlayerFacedownCardsAlready))
                 {
                     for (int i = 0; i < Constants.NumberOfFaceDownCardsForWar - firstPlayerFacedownCardsAlready; i++)
                     {
