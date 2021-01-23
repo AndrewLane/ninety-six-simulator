@@ -79,12 +79,12 @@ namespace NinetySixSimulator.Services
                 {
                     foreach (var card in state.FirstPlayerState.PlayedCards.Cards)
                     {
-                        _logger.LogDebug($"First player saves: {card}");
+                        _logger.LogDebug($"Player 1 saves: {card}");
                         state.FirstPlayerState.GatherPile.Cards.Add(card);
                     }
                     foreach (var card in state.SecondPlayerState.PlayedCards.Cards)
                     {
-                        _logger.LogDebug($"Second player loses: {card}");
+                        _logger.LogDebug($"Player 2 loses: {card}");
                         state.FirstPlayerState.GatherPile.Cards.Add(card);
                     }
                     state.FirstPlayerState.PlayedCards.Cards.Clear();
@@ -102,12 +102,12 @@ namespace NinetySixSimulator.Services
                 {
                     foreach (var card in state.FirstPlayerState.PlayedCards.Cards)
                     {
-                        _logger.LogDebug($"First player loses: {card}");
+                        _logger.LogDebug($"Player 1 loses: {card}");
                         state.SecondPlayerState.GatherPile.Cards.Add(card);
                     }
                     foreach (var card in state.SecondPlayerState.PlayedCards.Cards)
                     {
-                        _logger.LogDebug($"Second player saves: {card}");
+                        _logger.LogDebug($"Player 2 saves: {card}");
                         state.SecondPlayerState.GatherPile.Cards.Add(card);
                     }
                     state.FirstPlayerState.PlayedCards.Cards.Clear();
