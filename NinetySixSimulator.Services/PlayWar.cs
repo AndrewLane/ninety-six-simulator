@@ -36,7 +36,8 @@ namespace NinetySixSimulator.Services
                     state.Tick(Constants.GamePlayParameters.TimeToShuffle);
                 }
 
-                if (PlayerHasEnoughCardsForWar(state.FirstPlayerState) && PlayerHasEnoughCardsForWar(state.SecondPlayerState))
+                if (PlayerHasEnoughCardsForWar(state.FirstPlayerState, firstPlayerFacedownCardsAlready) 
+                    && PlayerHasEnoughCardsForWar(state.SecondPlayerState, secondPlayerFacedownCardsAlready))
                 {
                     for (int i = 0; i < Constants.NumberOfFaceDownCardsForWar - firstPlayerFacedownCardsAlready; i++)
                     {
@@ -54,18 +55,19 @@ namespace NinetySixSimulator.Services
                 }
                 else
                 {
-                    if (PlayerHasEnoughCardsForWar(state.FirstPlayerState) == false && PlayerHasEnoughCardsForWar(state.SecondPlayerState) == false)
+                    if (PlayerHasEnoughCardsForWar(state.FirstPlayerState, firstPlayerFacedownCardsAlready) == false &&
+                        PlayerHasEnoughCardsForWar(state.SecondPlayerState, secondPlayerFacedownCardsAlready) == false)
                     {
                         throw new Exception("todo when we forgot to shuffle???");
                     }
-                    if (PlayerHasEnoughCardsForWar(state.FirstPlayerState) == false)
+                    if (PlayerHasEnoughCardsForWar(state.FirstPlayerState, firstPlayerFacedownCardsAlready) == false)
                     {
-                        _logger.LogDebug("First player does not have enough cards for war...");
+                        _logger.LogDebug("Player 1 does not have enough cards for war...");
                         state.FirstPlayerState.CannotContinueBecauseCantPlayEnoughCardsForWar = true;
                     }
                     else
                     {
-                        _logger.LogDebug("Second player does not have enough cards for war...");
+                        _logger.LogDebug("Player 2 does not have enough cards for war...");
                         state.SecondPlayerState.CannotContinueBecauseCantPlayEnoughCardsForWar = true;
                     }
 
@@ -173,10 +175,10 @@ namespace NinetySixSimulator.Services
             return false;
         }
 
-        private static bool PlayerHasEnoughCardsForWar(PlayerGameState playerGameState)
+        private static bool PlayerHasEnoughCardsForWar(PlayerGameState playerGameState, int numberOfCardsPlayedFaceDownAlready = 0)
         {
             // does the player have enough cards to put face down and then 1 to play for the war
-            return playerGameState.PlayPile.Cards.Count >= Constants.NumberOfFaceDownCardsForWar + 1;
+            return playerGameState.PlayPile.Cards.Count >= Constants.NumberOfFaceDownCardsForWar + 1 - numberOfCardsPlayedFaceDownAlready;
         }
 
         private (int, bool) ShuffleForWarIfNecessary(PlayerGameState playerGameState, int whichPlayer)

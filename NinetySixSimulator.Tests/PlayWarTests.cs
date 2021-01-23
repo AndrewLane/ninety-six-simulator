@@ -327,5 +327,146 @@ namespace NinetySixSimulator.Tests
             Assert.True(secondPlayerState.PlayedCards.Cards.Count == 0);
             Assert.True(secondPlayerState.PlayPile.Cards.Count == 0);
         }
+
+        [Fact]
+        public void WarTestSimpleWarWhenBothNeedToShuffle()
+        {
+            var loggerDouble = new LoggerDouble<PlayWar>();
+
+            var firstPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "5", Suit = Constants.Suits.Diamonds },
+                        new Card { Rank = "A", Suit = Constants.Suits.Clubs },
+                    }
+                },
+                GatherPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "7", Suit = Constants.Suits.Spades },
+                        new Card { Rank = "4", Suit = Constants.Suits.Diamonds },
+                        new Card { Rank = "K", Suit = Constants.Suits.Hearts }
+                }
+                },
+                PlayedCards = new CardPile { Cards = new List<Card> { } },
+            };
+
+            // player 2 should always lose because he's always gonna play the 2 in the 2nd war
+            var secondPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "5", Suit = Constants.Suits.Hearts },                        
+                        new Card { Rank = "Q", Suit = Constants.Suits.Hearts },
+                        new Card { Rank = "J", Suit = Constants.Suits.Diamonds },
+                        new Card { Rank = "3", Suit = Constants.Suits.Clubs }
+                    }
+                },
+                GatherPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "2", Suit = Constants.Suits.Clubs },
+                }
+                },
+                PlayedCards = new CardPile { Cards = new List<Card> { } },
+            };
+
+            var gameStateMock = new Mock<ITrackIndividualGameState>();
+            gameStateMock.Setup(mock => mock.FirstPlayerState).Returns(firstPlayerState);
+            gameStateMock.Setup(mock => mock.SecondPlayerState).Returns(secondPlayerState);
+
+            var objectUnderTest = new PlayWar(loggerDouble);
+
+            objectUnderTest.War(gameStateMock.Object);
+
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToPlayCard), Times.Exactly(2));
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToPlayCardsFaceDownForAWar), Times.Once());
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToShuffle), Times.Once());
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToGatherCards), Times.Once());
+
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 1 wins"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"War: 5♦ vs 5♥..."));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, "War with depth 0 on this turn."));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, "Moving 3 card(s) from gather pile to play pile for player 1..."));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, "Moving 1 card(s) from gather pile to play pile for player 2..."));
+            Assert.True(loggerDouble.DebugEntries.Count() == 14);
+            Assert.True(firstPlayerState.GatherPile.Cards.Count == 10);
+            Assert.True(firstPlayerState.PlayedCards.Cards.Count == 0);
+            Assert.True(firstPlayerState.PlayPile.Cards.Count == 0);
+            Assert.True(secondPlayerState.GatherPile.Cards.Count == 0);
+            Assert.True(secondPlayerState.PlayedCards.Cards.Count == 0);
+            Assert.True(secondPlayerState.PlayPile.Cards.Count == 0);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void WarTestNotEnoughCardsForWar(int winner)
+        {
+            var loggerDouble = new LoggerDouble<PlayWar>();
+
+            var extraCard = new Card { Rank = "K", Suit = Constants.Suits.Hearts };
+
+            var firstPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "5", Suit = Constants.Suits.Diamonds },
+                        new Card { Rank = "A", Suit = Constants.Suits.Clubs },
+                        new Card { Rank = "7", Suit = Constants.Suits.Spades },
+                        new Card { Rank = "4", Suit = Constants.Suits.Diamonds }
+                    }
+                },
+                GatherPile = new CardPile { Cards = new List<Card> { } },
+                PlayedCards = new CardPile { Cards = new List<Card> { } },
+            };
+            var secondPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "5", Suit = Constants.Suits.Hearts },
+                        new Card { Rank = "2", Suit = Constants.Suits.Clubs },
+                        new Card { Rank = "Q", Suit = Constants.Suits.Hearts },
+                        new Card { Rank = "J", Suit = Constants.Suits.Diamonds }
+                    }
+                },
+                GatherPile = new CardPile { Cards = new List<Card> { } },
+                PlayedCards = new CardPile { Cards = new List<Card> { } },
+            };
+            PlayerGameState winnerState;
+            PlayerGameState loserState;
+            if (winner == 1)
+            {
+                winnerState = firstPlayerState;
+                loserState = secondPlayerState;
+            }
+            else
+            {
+                winnerState = secondPlayerState;
+                loserState = firstPlayerState;
+            }
+            winnerState.GatherPile.Cards.Add(extraCard);
+
+            var gameStateMock = new Mock<ITrackIndividualGameState>();
+            gameStateMock.Setup(mock => mock.FirstPlayerState).Returns(firstPlayerState);
+            gameStateMock.Setup(mock => mock.SecondPlayerState).Returns(secondPlayerState);
+
+            var objectUnderTest = new PlayWar(loggerDouble);
+
+            Assert.True(firstPlayerState.CannotContinueBecauseCantPlayEnoughCardsForWar == false);
+            Assert.True(secondPlayerState.CannotContinueBecauseCantPlayEnoughCardsForWar == false);
+
+            objectUnderTest.War(gameStateMock.Object);
+
+            Assert.True(winnerState.CannotContinueBecauseCantPlayEnoughCardsForWar == false);
+            Assert.True(loserState.CannotContinueBecauseCantPlayEnoughCardsForWar == true);
+
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {(winner == 1 ? 2 : 1 )} does not have enough cards for war..."));
+        }
     }
 }
