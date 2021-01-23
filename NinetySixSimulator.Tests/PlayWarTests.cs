@@ -255,25 +255,31 @@ namespace NinetySixSimulator.Tests
 
             var firstPlayerState = new PlayerGameState
             {
-                PlayPile = new CardPile { Cards = new List<Card> { 
-                    new Card { Rank = "5", Suit = Constants.Suits.Diamonds },
-                    new Card { Rank = "A", Suit = Constants.Suits.Clubs },
-                    new Card { Rank = "7", Suit = Constants.Suits.Spades },
-                    new Card { Rank = "4", Suit = Constants.Suits.Diamonds },
-                    winner == 1 ? winningCard : losingCard
-                } },
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "5", Suit = Constants.Suits.Diamonds },
+                        new Card { Rank = "A", Suit = Constants.Suits.Clubs },
+                        new Card { Rank = "7", Suit = Constants.Suits.Spades },
+                        new Card { Rank = "4", Suit = Constants.Suits.Diamonds },
+                        winner == 1 ? winningCard : losingCard
+                    }
+                },
                 GatherPile = new CardPile { Cards = new List<Card> { } },
                 PlayedCards = new CardPile { Cards = new List<Card> { } },
             };
             var secondPlayerState = new PlayerGameState
             {
-                PlayPile = new CardPile { Cards = new List<Card> {
-                    new Card { Rank = "5", Suit = Constants.Suits.Hearts },
-                    new Card { Rank = "2", Suit = Constants.Suits.Clubs },
-                    new Card { Rank = "Q", Suit = Constants.Suits.Hearts },
-                    new Card { Rank = "J", Suit = Constants.Suits.Diamonds },
-                    winner == 2 ? winningCard : losingCard
-                } },
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "5", Suit = Constants.Suits.Hearts },
+                        new Card { Rank = "2", Suit = Constants.Suits.Clubs },
+                        new Card { Rank = "Q", Suit = Constants.Suits.Hearts },
+                        new Card { Rank = "J", Suit = Constants.Suits.Diamonds },
+                        winner == 2 ? winningCard : losingCard
+                    }
+                },
                 GatherPile = new CardPile { Cards = new List<Card> { } },
                 PlayedCards = new CardPile { Cards = new List<Card> { } },
             };
