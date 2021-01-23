@@ -468,5 +468,68 @@ namespace NinetySixSimulator.Tests
 
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {(winner == 1 ? 2 : 1)} does not have enough cards for war..."));
         }
+
+        [Fact]
+        public void WarTestAlmostImpossibleCase()
+        {
+            var loggerDouble = new LoggerDouble<PlayWar>();
+
+            var firstPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "A", Suit = Constants.Suits.Clubs },
+                        new Card { Rank = "K", Suit = Constants.Suits.Diamonds},
+                        new Card { Rank = "K", Suit = Constants.Suits.Hearts},
+                        new Card { Rank = "K", Suit = Constants.Suits.Clubs},
+                }
+                },
+                GatherPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "A", Suit = Constants.Suits.Diamonds},
+                }
+                },
+                PlayedCards = new CardPile { Cards = new List<Card> { } }
+            };
+            var secondPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                    new Card { Rank = "A", Suit = Constants.Suits.Spades },
+                    new Card { Rank = "Q", Suit = Constants.Suits.Diamonds},
+                    new Card { Rank = "Q", Suit = Constants.Suits.Hearts},
+                    new Card { Rank = "Q", Suit = Constants.Suits.Clubs},
+                }
+                },
+                GatherPile = new CardPile
+                {
+                    Cards = new List<Card> {
+                        new Card { Rank = "A", Suit = Constants.Suits.Hearts},
+                }
+                },
+                PlayedCards = new CardPile { Cards = new List<Card> { } }
+            };
+
+            var gameStateMock = new Mock<ITrackIndividualGameState>();
+            gameStateMock.Setup(mock => mock.FirstPlayerState).Returns(firstPlayerState);
+            gameStateMock.Setup(mock => mock.SecondPlayerState).Returns(secondPlayerState);
+
+            var objectUnderTest = new PlayWar(loggerDouble);
+
+            bool exceptionThrown = false;
+            try
+            {
+                objectUnderTest.War(gameStateMock.Object, warDepth: 1);
+            }
+            catch
+            {
+                exceptionThrown = true;
+            }
+
+            Assert.True(exceptionThrown);
+        }
     }
 }

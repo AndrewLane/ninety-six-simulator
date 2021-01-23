@@ -58,7 +58,7 @@ namespace NinetySixSimulator.Services
                     if (PlayerHasEnoughCardsForWar(state.FirstPlayerState, firstPlayerFacedownCardsAlready) == false &&
                         PlayerHasEnoughCardsForWar(state.SecondPlayerState, secondPlayerFacedownCardsAlready) == false)
                     {
-                        throw new Exception("todo when we forgot to shuffle???");
+                        throw new Exception("This code path is almost statistically impossible with a shuffled, full deck of cards!");
                     }
                     if (PlayerHasEnoughCardsForWar(state.FirstPlayerState, firstPlayerFacedownCardsAlready) == false)
                     {
