@@ -122,7 +122,7 @@ namespace NinetySixSimulator.Services
             if (player1Shuffled || player2Shuffled)
             {
                 state.Tick(Constants.GamePlayParameters.TimeToShuffle);
-            }           
+            }
 
             if (_logger.IsEnabled(LogLevel.Trace))
             {

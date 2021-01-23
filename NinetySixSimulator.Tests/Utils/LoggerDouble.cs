@@ -31,12 +31,12 @@ namespace NinetySixSimulator.Tests.Utils
         {
             return true;
         }
-        
+
         public IDisposable BeginScope<TState>(TState state)
         {
             return new LoggingScope();
         }
-        
+
         public class LoggingScope : IDisposable
         {
             public void Dispose()
