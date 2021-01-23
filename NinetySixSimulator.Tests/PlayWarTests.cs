@@ -359,7 +359,7 @@ namespace NinetySixSimulator.Tests
                 PlayPile = new CardPile
                 {
                     Cards = new List<Card> {
-                        new Card { Rank = "5", Suit = Constants.Suits.Hearts },                        
+                        new Card { Rank = "5", Suit = Constants.Suits.Hearts },
                         new Card { Rank = "Q", Suit = Constants.Suits.Hearts },
                         new Card { Rank = "J", Suit = Constants.Suits.Diamonds },
                         new Card { Rank = "3", Suit = Constants.Suits.Clubs }
@@ -466,7 +466,7 @@ namespace NinetySixSimulator.Tests
             Assert.True(winnerState.CannotContinueBecauseCantPlayEnoughCardsForWar == false);
             Assert.True(loserState.CannotContinueBecauseCantPlayEnoughCardsForWar == true);
 
-            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {(winner == 1 ? 2 : 1 )} does not have enough cards for war..."));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {(winner == 1 ? 2 : 1)} does not have enough cards for war..."));
         }
     }
 }
