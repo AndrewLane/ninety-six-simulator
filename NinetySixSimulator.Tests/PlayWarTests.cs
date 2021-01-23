@@ -242,5 +242,84 @@ namespace NinetySixSimulator.Tests
             Assert.True(secondPlayerState.PlayedCards.Cards.Count == 0);
             Assert.True(secondPlayerState.PlayPile.Cards.Count == 0);
         }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void WarTestSimpleWar(int winner)
+        {
+            var loggerDouble = new LoggerDouble<PlayWar>();
+
+            var winningCard = new Card { Rank = "K", Suit = Constants.Suits.Hearts };
+            var losingCard = new Card { Rank = "3", Suit = Constants.Suits.Clubs };
+
+            var firstPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile { Cards = new List<Card> { 
+                    new Card { Rank = "5", Suit = Constants.Suits.Diamonds },
+                    new Card { Rank = "A", Suit = Constants.Suits.Clubs },
+                    new Card { Rank = "7", Suit = Constants.Suits.Spades },
+                    new Card { Rank = "4", Suit = Constants.Suits.Diamonds },
+                    winner == 1 ? winningCard : losingCard
+                } },
+                GatherPile = new CardPile { Cards = new List<Card> { } },
+                PlayedCards = new CardPile { Cards = new List<Card> { } },
+            };
+            var secondPlayerState = new PlayerGameState
+            {
+                PlayPile = new CardPile { Cards = new List<Card> {
+                    new Card { Rank = "5", Suit = Constants.Suits.Hearts },
+                    new Card { Rank = "2", Suit = Constants.Suits.Clubs },
+                    new Card { Rank = "Q", Suit = Constants.Suits.Hearts },
+                    new Card { Rank = "J", Suit = Constants.Suits.Diamonds },
+                    winner == 2 ? winningCard : losingCard
+                } },
+                GatherPile = new CardPile { Cards = new List<Card> { } },
+                PlayedCards = new CardPile { Cards = new List<Card> { } },
+            };
+
+            var gameStateMock = new Mock<ITrackIndividualGameState>();
+            gameStateMock.Setup(mock => mock.FirstPlayerState).Returns(firstPlayerState);
+            gameStateMock.Setup(mock => mock.SecondPlayerState).Returns(secondPlayerState);
+
+            var objectUnderTest = new PlayWar(loggerDouble);
+
+            objectUnderTest.War(gameStateMock.Object);
+
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToPlayCard), Times.Exactly(2));
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToPlayCardsFaceDownForAWar), Times.Once());
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToShuffle), Times.Never());
+            gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToGatherCards), Times.Once());
+
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {winner} wins"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"War: 5♦ vs 5♥..."));
+            if (winner == 1)
+            {
+                Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"War: {winningCard} vs {losingCard}..."));
+            }
+            else
+            {
+                Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"War: {losingCard} vs {winningCard}..."));
+            }
+            var player1verb = (winner == 1 ? "saves" : "loses");
+            var player2verb = (winner == 2 ? "saves" : "loses");
+
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, "War with depth 0 on this turn."));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 1 {player1verb}: 5♦"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 1 {player1verb}: A♣"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 1 {player1verb}: 7♠"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 1 {player1verb}: 4♦"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 2 {player2verb}: 5♥"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 2 {player2verb}: 2♣"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 2 {player2verb}: Q♥"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 2 {player2verb}: J♦"));
+            Assert.True(loggerDouble.DebugEntries.Count() == 12);
+            Assert.True(firstPlayerState.GatherPile.Cards.Count == (winner == 1 ? 10 : 0));
+            Assert.True(firstPlayerState.PlayedCards.Cards.Count == 0);
+            Assert.True(firstPlayerState.PlayPile.Cards.Count == 0);
+            Assert.True(secondPlayerState.GatherPile.Cards.Count == (winner == 2 ? 10 : 0));
+            Assert.True(secondPlayerState.PlayedCards.Cards.Count == 0);
+            Assert.True(secondPlayerState.PlayPile.Cards.Count == 0);
+        }
     }
 }
