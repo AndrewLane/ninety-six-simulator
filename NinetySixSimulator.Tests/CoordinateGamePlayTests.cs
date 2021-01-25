@@ -60,7 +60,7 @@ namespace NinetySixSimulator.Tests
 
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"{ dummyGameParams.FirstPlayerName} has { (winner == 1 ? 1 : 0)} wins, " +
                 $"{dummyGameParams.SecondPlayerName} has {(winner == 2 ? 1 : 0)} wins, 0 ties"));
-            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {winner} has won!"));
+            Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {winner} has won this game!"));
 
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Information, "Simulation took 3 seconds..."));
 
