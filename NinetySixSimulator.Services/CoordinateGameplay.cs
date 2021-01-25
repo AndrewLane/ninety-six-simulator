@@ -13,7 +13,7 @@ namespace NinetySixSimulator.Services
         private readonly ITrackIndividualGameState _individualGameStateTracker;
         private readonly IDateTime _dateTime;
 
-        public CoordinateGameplay(ILogger<CoordinateGameplay> logger, IPlayWar gamePlay, 
+        public CoordinateGameplay(ILogger<CoordinateGameplay> logger, IPlayWar gamePlay,
             IPointsCalculator pointsCalculator, ITrackIndividualGameState individualGameStateTracker,
             IDateTime dateTime)
         {
