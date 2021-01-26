@@ -10,7 +10,7 @@ namespace NinetySixSimulator.ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Hello Ninety-Six Simulator!");
 
@@ -27,6 +27,11 @@ namespace NinetySixSimulator.ConsoleApp
                 .ConfigureServices((context, services) =>
                 {
                     services.AddTransient<IApp, App>();
+                    services.AddSingleton<IDateTime, SystemDateTime>();
+                    services.AddSingleton<ICoordinateGameplay, CoordinateGameplay>();
+                    services.AddSingleton<IPlayWar, PlayWar>();
+                    services.AddSingleton<IPointsCalculator, PointsCalculator>();
+                    services.AddSingleton<ITrackIndividualGameState, TrackIndividualGameState>();
                 })
                 .UseSerilog()
                 .Build();
