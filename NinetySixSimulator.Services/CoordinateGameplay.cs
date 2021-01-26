@@ -52,6 +52,7 @@ namespace NinetySixSimulator.Services
                 }
 
                 bool doneWithIndividualGame = false;
+                bool timeout = false;
                 while (!doneWithIndividualGame)
                 {
                     _gamePlay.War(game);
@@ -63,6 +64,7 @@ namespace NinetySixSimulator.Services
                     if (game.TimedOut)
                     {
                         doneWithIndividualGame = true;
+                        timeout = true;
                     }
                 }
                 totalElapsedTime += game.TimeElapsed;
@@ -77,7 +79,7 @@ namespace NinetySixSimulator.Services
                 {
                     winner = 1;
                 }
-                else if (game.TimedOut)
+                else if (timeout)
                 {
                     _logger.LogDebug($"Game has timed out after {game.TimeElapsed.TotalSeconds} seconds.");
                     var player1Cards = game.FirstPlayerState.PlayPile.Cards.Concat(game.FirstPlayerState.GatherPile.Cards)
