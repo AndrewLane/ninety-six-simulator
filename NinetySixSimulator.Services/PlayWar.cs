@@ -75,49 +75,40 @@ namespace NinetySixSimulator.Services
             }
             else if (firstPlayerCard > secondPlayerCard)
             {
-                _logger.LogDebug("Player 1 wins");
-                state.Tick(Constants.GamePlayParameters.TimeToGatherCards);
-                if (warDepth > 0)
-                {
-                    foreach (var card in state.FirstPlayerState.PlayedCards.Cards)
-                    {
-                        _logger.LogDebug($"Player 1 saves: {card}");
-                        state.FirstPlayerState.GatherPile.Cards.Add(card);
-                    }
-                    foreach (var card in state.SecondPlayerState.PlayedCards.Cards)
-                    {
-                        _logger.LogDebug($"Player 2 loses: {card}");
-                        state.FirstPlayerState.GatherPile.Cards.Add(card);
-                    }
-                    state.FirstPlayerState.PlayedCards.Cards.Clear();
-                    state.SecondPlayerState.PlayedCards.Cards.Clear();
-
-                }
-                state.FirstPlayerState.GatherPile.Cards.Add(firstPlayerCard);
-                state.FirstPlayerState.GatherPile.Cards.Add(secondPlayerCard);
+                HandlePlayerWinning(state, warDepth, winner: 1, firstPlayerCard, secondPlayerCard);
             }
             else
             {
-                _logger.LogDebug("Player 2 wins");
-                state.Tick(Constants.GamePlayParameters.TimeToGatherCards);
-                if (warDepth > 0)
-                {
-                    foreach (var card in state.FirstPlayerState.PlayedCards.Cards)
-                    {
-                        _logger.LogDebug($"Player 1 loses: {card}");
-                        state.SecondPlayerState.GatherPile.Cards.Add(card);
-                    }
-                    foreach (var card in state.SecondPlayerState.PlayedCards.Cards)
-                    {
-                        _logger.LogDebug($"Player 2 saves: {card}");
-                        state.SecondPlayerState.GatherPile.Cards.Add(card);
-                    }
-                    state.FirstPlayerState.PlayedCards.Cards.Clear();
-                    state.SecondPlayerState.PlayedCards.Cards.Clear();
-                }
-                state.SecondPlayerState.GatherPile.Cards.Add(firstPlayerCard);
-                state.SecondPlayerState.GatherPile.Cards.Add(secondPlayerCard);
+                HandlePlayerWinning(state, warDepth, winner: 2, firstPlayerCard, secondPlayerCard);
             }
+        }
+
+        private void HandlePlayerWinning(ITrackIndividualGameState state, int warDepth, int winner,
+            Card firstCard, Card secondCard)
+        {
+            _logger.LogDebug($"Player {winner} wins");
+            var loser = (3 - winner);
+            var winnerState = (winner == 1) ? state.FirstPlayerState : state.SecondPlayerState;
+            var loserState = (winner == 2) ? state.FirstPlayerState : state.SecondPlayerState;
+            state.Tick(Constants.GamePlayParameters.TimeToGatherCards);
+            if (warDepth > 0)
+            {
+                foreach (var card in winnerState.PlayedCards.Cards)
+                {
+                    _logger.LogDebug($"Player {winner} saves: {card}");
+                    winnerState.GatherPile.Cards.Add(card);
+                }
+                foreach (var card in loserState.PlayedCards.Cards)
+                {
+                    _logger.LogDebug($"Player {loser} loses: {card}");
+                    winnerState.GatherPile.Cards.Add(card);
+                }
+                winnerState.PlayedCards.Cards.Clear();
+                loserState.PlayedCards.Cards.Clear();
+
+            }
+            winnerState.GatherPile.Cards.Add(firstCard);
+            winnerState.GatherPile.Cards.Add(secondCard);
         }
 
         public void Transition(ITrackIndividualGameState state)
