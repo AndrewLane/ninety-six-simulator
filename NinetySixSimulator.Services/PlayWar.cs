@@ -79,7 +79,7 @@ namespace NinetySixSimulator.Services
             }
             else
             {
-                HandlePlayerWinning(state, warDepth, winner: 1, firstPlayerCard, secondPlayerCard);
+                HandlePlayerWinning(state, warDepth, winner: 2, firstPlayerCard, secondPlayerCard);
             }
         }
 
