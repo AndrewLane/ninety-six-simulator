@@ -4,6 +4,6 @@ namespace NinetySixSimulator.Services
 {
     public interface ICoordinateGameplay
     {
-        void Play(GameParameters gameParams);
+        ISimulationStats Play(GameParameters gameParams);
     }
 }

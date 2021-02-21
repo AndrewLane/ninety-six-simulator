@@ -32,6 +32,7 @@ namespace NinetySixSimulator.ConsoleApp
                     services.AddSingleton<IPlayWar, PlayWar>();
                     services.AddSingleton<IPointsCalculator, PointsCalculator>();
                     services.AddSingleton<ITrackIndividualGameState, TrackIndividualGameState>();
+                    services.AddSingleton<ICompileStats, CompileStats>();
                 })
                 .UseSerilog()
                 .Build();

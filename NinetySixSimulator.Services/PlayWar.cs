@@ -93,6 +93,15 @@ namespace NinetySixSimulator.Services
             state.Tick(Constants.GamePlayParameters.TimeToGatherCards);
             if (warDepth > 0)
             {
+                if (winner == 1)
+                {
+                    state.Stats.Player1WarWinsByDepth[warDepth]++;
+                }
+                else
+                {
+                    state.Stats.Player2WarWinsByDepth[warDepth]++;
+                }
+
                 foreach (var card in winnerState.PlayedCards.Cards)
                 {
                     _logger.LogDebug($"Player {winner} saves: {card}");

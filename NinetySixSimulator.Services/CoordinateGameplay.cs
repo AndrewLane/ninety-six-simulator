@@ -12,20 +12,23 @@ namespace NinetySixSimulator.Services
         private readonly IPointsCalculator _pointsCalculator;
         private readonly ITrackIndividualGameState _individualGameStateTracker;
         private readonly IDateTime _dateTime;
+        private readonly ICompileStats _statsCompiler;
 
         public CoordinateGameplay(ILogger<CoordinateGameplay> logger, IPlayWar gamePlay,
             IPointsCalculator pointsCalculator, ITrackIndividualGameState individualGameStateTracker,
-            IDateTime dateTime)
+            IDateTime dateTime, ICompileStats statsCompiler)
         {
             _logger = logger;
             _gamePlay = gamePlay;
             _pointsCalculator = pointsCalculator;
             _individualGameStateTracker = individualGameStateTracker;
             _dateTime = dateTime;
+            _statsCompiler = statsCompiler;
         }
 
-        public void Play(GameParameters gameParams)
+        public ISimulationStats Play(GameParameters gameParams)
         {
+            var overallStats = new SimulationStats();
             int player1Wins = 0;
             int player2Wins = 0;
             int ties = 0;
@@ -53,29 +56,40 @@ namespace NinetySixSimulator.Services
 
                 bool doneWithIndividualGame = false;
                 bool timeout = false;
+                bool player1HasLost = false;
+                bool player2HasLost = false;
                 while (!doneWithIndividualGame)
                 {
                     _gamePlay.War(game);
-                    doneWithIndividualGame = _gamePlay.PlayerHasLost(game.FirstPlayerState) || _gamePlay.PlayerHasLost(game.SecondPlayerState);
-                    if (!doneWithIndividualGame)
+                    player1HasLost = _gamePlay.PlayerHasLost(game.FirstPlayerState);
+                    player2HasLost = _gamePlay.PlayerHasLost(game.SecondPlayerState);
+                    doneWithIndividualGame = player1HasLost || player2HasLost;
+                    if (player1HasLost || player2HasLost)
+                    {
+                        game.Stats.Player1WinsNinetySixToZero = player2HasLost;
+                        game.Stats.Player2WinsNinetySixToZero = player1HasLost;
+                    }
+                    else
                     {
                         _gamePlay.Transition(game);
-                    }
-                    if (game.TimedOut)
-                    {
-                        doneWithIndividualGame = true;
-                        timeout = true;
+                        if (game.TimedOut)
+                        {
+                            doneWithIndividualGame = true;
+                            timeout = true;
+                        }
+
                     }
                 }
                 totalElapsedTime += game.TimeElapsed;
+                game.Stats.SimulationTime = game.TimeElapsed;
 
                 int winner;
 
-                if (_gamePlay.PlayerHasLost(game.FirstPlayerState))
+                if (player1HasLost)
                 {
                     winner = 2;
                 }
-                else if (_gamePlay.PlayerHasLost(game.SecondPlayerState))
+                else if (player2HasLost)
                 {
                     winner = 1;
                 }
@@ -115,6 +129,7 @@ namespace NinetySixSimulator.Services
                 {
                     throw new Exception("Unexpected game ending...no winner and no time out!");
                 }
+                game.Stats.Winner = winner;
                 _logger.LogDebug(winner > 0 ? $"Player {winner} has won this game!" : "This game is a tie.");
                 switch (winner)
                 {
@@ -132,11 +147,14 @@ namespace NinetySixSimulator.Services
 
                 _logger.LogDebug($"{gameParams.FirstPlayerName} has {player1Wins} wins, " +
                                  $"{gameParams.SecondPlayerName} has {player2Wins} wins, {ties} ties");
+                _statsCompiler.UpdateStats(overallStats, game.Stats);
                 doneWithAllGames = totalElapsedTime >= gameParams.TotalLengthOfSimulation;
             }
 
             var simulationTime = _dateTime.Now - startofSimulation;
             _logger.LogInformation($"Simulation took {simulationTime.TotalSeconds} seconds...");
+            overallStats.TotalSimulationTime = simulationTime;
+            return overallStats;
         }
     }
 }
