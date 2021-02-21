@@ -22,6 +22,8 @@ namespace NinetySixSimulator.Tests
             var pointsCalculatorMock = new Mock<IPointsCalculator>();
             var individualGameStateTrackerMock = new Mock<ITrackIndividualGameState>();
             var timerMock = new Mock<IDateTime>();
+            var statsCompilerMock = new Mock<ICompileStats>();
+            var singleGameStatsMock = new Mock<ISingleGameStats>();
 
             var dummyStart = new DateTime(year: 2011, month: 8, day: 23, hour: 16, minute: 0, second: 0);
             var dummySimulationEnd = new DateTime(year: 2011, month: 8, day: 23, hour: 16, minute: 0, second: 3); // 3 seconds later
@@ -37,13 +39,15 @@ namespace NinetySixSimulator.Tests
             fakeGameState.Setup(mock => mock.SecondPlayerState).Returns(player2DummyState);
             var dummyDuration = TimeSpan.FromMinutes(5);
             fakeGameState.Setup(mock => mock.TimeElapsed).Returns(dummyDuration);
+            fakeGameState.Setup(mock => mock.Stats).Returns(singleGameStatsMock.Object);
 
             gamePlayMock.Setup(mock => mock.PlayerHasLost(player1DummyState)).Returns(winner == 2);
             gamePlayMock.Setup(mock => mock.PlayerHasLost(player2DummyState)).Returns(winner == 1);
 
             individualGameStateTrackerMock.Setup(mock => mock.InitializeGameState()).Returns(fakeGameState.Object);
 
-            var objectUnderTest = new CoordinateGameplay(loggerDouble, gamePlayMock.Object, pointsCalculatorMock.Object, individualGameStateTrackerMock.Object, timerMock.Object);
+            var objectUnderTest = new CoordinateGameplay(loggerDouble, gamePlayMock.Object, pointsCalculatorMock.Object,
+                individualGameStateTrackerMock.Object, timerMock.Object, statsCompilerMock.Object);
 
             var dummySimulationDuration = TimeSpan.FromMinutes(4);
             var dummyGameParams = new GameParameters
@@ -53,7 +57,8 @@ namespace NinetySixSimulator.Tests
                 TotalLengthOfSimulation = dummySimulationDuration
             };
 
-            objectUnderTest.Play(dummyGameParams);
+            var result = objectUnderTest.Play(dummyGameParams);
+            Assert.True(result.TotalSimulationTime == (dummySimulationEnd - dummyStart));
 
             Assert.True(loggerDouble.DebugEntries.Count() == 3);
             Assert.True(loggerDouble.InformationEntries.Count() == 1);
@@ -72,6 +77,10 @@ namespace NinetySixSimulator.Tests
 
             //make sure there was no need to calculate points
             pointsCalculatorMock.Verify(mock => mock.GetPoints(It.IsAny<List<Card>>()), Times.Never());
+
+            singleGameStatsMock.VerifySet(mock => mock.Winner = winner, Times.Once());
+            singleGameStatsMock.VerifySet(mock => mock.SimulationTime = It.IsAny<TimeSpan>(), Times.Once());
+            statsCompilerMock.Verify(mock => mock.UpdateStats(It.IsAny<ISimulationStats>(), It.IsAny<ISingleGameStats>()), Times.Once());
         }
 
         [Fact]
@@ -82,6 +91,8 @@ namespace NinetySixSimulator.Tests
             var pointsCalculatorMock = new Mock<IPointsCalculator>();
             var individualGameStateTrackerMock = new Mock<ITrackIndividualGameState>();
             var timerMock = new Mock<IDateTime>();
+            var statsCompilerMock = new Mock<ICompileStats>();
+            var singleGameStatsMock = new Mock<ISingleGameStats>();
 
             var dummyStart = new DateTime(year: 2011, month: 8, day: 23, hour: 16, minute: 0, second: 0);
             var dummySimulationEnd = new DateTime(year: 2011, month: 8, day: 23, hour: 16, minute: 0, second: 3); // 3 seconds later
@@ -99,9 +110,12 @@ namespace NinetySixSimulator.Tests
             fakeGameState.Setup(mock => mock.SecondPlayerState).Returns(player2DummyState);
             fakeGameState.SetupSequence(mock => mock.TimeElapsed)
                 .Returns(TimeSpan.FromMinutes(4)) // first game 4 minutes
-                .Returns(TimeSpan.FromMinutes(4)) // but TimeElapsed is invoked twice
+                .Returns(TimeSpan.FromMinutes(4)) // but TimeElapsed is invoked ...
+                .Returns(TimeSpan.FromMinutes(4)) // three times
                 .Returns(TimeSpan.FromMinutes(7)) // second game 7 minutes
-                .Returns(TimeSpan.FromMinutes(7)); // but TimeElapsed gets invoked twice
+                .Returns(TimeSpan.FromMinutes(7)) // but TimeElapsed gets invoked ...
+                .Returns(TimeSpan.FromMinutes(7)); // trhee times
+            fakeGameState.Setup(mock => mock.Stats).Returns(singleGameStatsMock.Object);
 
             gamePlayMock.Setup(mock => mock.PlayerHasLost(It.IsAny<PlayerGameState>())).Returns(false);
 
@@ -116,7 +130,8 @@ namespace NinetySixSimulator.Tests
 
             pointsCalculatorMock.Setup(mock => mock.GetPoints(It.IsAny<List<Card>>())).Returns(48); // always return a tie
 
-            var objectUnderTest = new CoordinateGameplay(loggerDouble, gamePlayMock.Object, pointsCalculatorMock.Object, individualGameStateTrackerMock.Object, timerMock.Object);
+            var objectUnderTest = new CoordinateGameplay(loggerDouble, gamePlayMock.Object, pointsCalculatorMock.Object,
+                individualGameStateTrackerMock.Object, timerMock.Object, statsCompilerMock.Object);
 
             var dummySimulationDuration = TimeSpan.FromMinutes(10);
             var dummyGameParams = new GameParameters
@@ -126,7 +141,8 @@ namespace NinetySixSimulator.Tests
                 TotalLengthOfSimulation = dummySimulationDuration
             };
 
-            objectUnderTest.Play(dummyGameParams);
+            var result = objectUnderTest.Play(dummyGameParams);
+            Assert.True(result.TotalSimulationTime == (dummySimulationEnd - dummyStart));
 
             Assert.True(loggerDouble.DebugEntries.Count() == 8);
             Assert.True(loggerDouble.InformationEntries.Count() == 1);
@@ -146,6 +162,10 @@ namespace NinetySixSimulator.Tests
             gamePlayMock.Verify(mock => mock.Transition(It.IsAny<ITrackIndividualGameState>()), Times.Exactly(5));
 
             pointsCalculatorMock.Verify(mock => mock.GetPoints(It.IsAny<List<Card>>()), Times.Exactly(4));
+
+            singleGameStatsMock.VerifySet(mock => mock.Winner = 0, Times.Exactly(2));
+            singleGameStatsMock.VerifySet(mock => mock.SimulationTime = It.IsAny<TimeSpan>(), Times.Exactly(2));
+            statsCompilerMock.Verify(mock => mock.UpdateStats(It.IsAny<ISimulationStats>(), It.IsAny<ISingleGameStats>()), Times.Exactly(2));
         }
 
         [Theory]
@@ -158,6 +178,8 @@ namespace NinetySixSimulator.Tests
             var pointsCalculatorMock = new Mock<IPointsCalculator>();
             var individualGameStateTrackerMock = new Mock<ITrackIndividualGameState>();
             var timerMock = new Mock<IDateTime>();
+            var statsCompilerMock = new Mock<ICompileStats>();
+            var singleGameStatsMock = new Mock<ISingleGameStats>();
 
             // use a real game state to easily initialize a full deck
             var realGameState = new TrackIndividualGameState().InitializeGameState();
@@ -173,6 +195,7 @@ namespace NinetySixSimulator.Tests
             gamePlayMock.Setup(mock => mock.PlayerHasLost(It.IsAny<PlayerGameState>())).Returns(false);
 
             fakeGameState.Setup(mock => mock.TimedOut).Returns(true);
+            fakeGameState.Setup(mock => mock.Stats).Returns(singleGameStatsMock.Object);
 
             individualGameStateTrackerMock.Setup(mock => mock.InitializeGameState()).Returns(fakeGameState.Object);
 
@@ -180,7 +203,8 @@ namespace NinetySixSimulator.Tests
                 .Returns(winner == 1 ? 49 : 47)
                 .Returns(winner == 2 ? 49 : 47);
 
-            var objectUnderTest = new CoordinateGameplay(loggerDouble, gamePlayMock.Object, pointsCalculatorMock.Object, individualGameStateTrackerMock.Object, timerMock.Object);
+            var objectUnderTest = new CoordinateGameplay(loggerDouble, gamePlayMock.Object, pointsCalculatorMock.Object,
+                individualGameStateTrackerMock.Object, timerMock.Object, statsCompilerMock.Object);
 
             var dummySimulationDuration = TimeSpan.FromMinutes(10);
             var dummyGameParams = new GameParameters
@@ -202,6 +226,9 @@ namespace NinetySixSimulator.Tests
             gamePlayMock.Verify(mock => mock.War(It.IsAny<ITrackIndividualGameState>(), It.IsAny<int>()), Times.Once());
             gamePlayMock.Verify(mock => mock.Transition(It.IsAny<ITrackIndividualGameState>()), Times.Once());
             pointsCalculatorMock.Verify(mock => mock.GetPoints(It.IsAny<List<Card>>()), Times.Exactly(2));
+            singleGameStatsMock.VerifySet(mock => mock.Winner = winner, Times.Once());
+            singleGameStatsMock.VerifySet(mock => mock.SimulationTime = It.IsAny<TimeSpan>(), Times.Once());
+            statsCompilerMock.Verify(mock => mock.UpdateStats(It.IsAny<ISimulationStats>(), It.IsAny<ISingleGameStats>()), Times.Once());
         }
 
     }

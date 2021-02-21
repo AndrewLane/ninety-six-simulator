@@ -174,6 +174,7 @@ namespace NinetySixSimulator.Tests
         public void WarTestWinnerAfterSingleDepthWar(int winner)
         {
             var loggerDouble = new LoggerDouble<PlayWar>();
+            var singleGameStatsMock = new Mock<ISingleGameStats>();
 
             var winningCard = new Card { Rank = "K", Suit = Constants.Suits.Hearts };
             var losingCard = new Card { Rank = "3", Suit = Constants.Suits.Clubs };
@@ -209,6 +210,12 @@ namespace NinetySixSimulator.Tests
             gameStateMock.Setup(mock => mock.FirstPlayerState).Returns(firstPlayerState);
             gameStateMock.Setup(mock => mock.SecondPlayerState).Returns(secondPlayerState);
 
+            var player1WarWinsByDepthTracker = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0 };
+            var player2WarWinsByDepthTracker = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0 };
+            singleGameStatsMock.Setup(mock => mock.Player1WarWinsByDepth).Returns(player1WarWinsByDepthTracker);
+            singleGameStatsMock.Setup(mock => mock.Player2WarWinsByDepth).Returns(player2WarWinsByDepthTracker);
+            gameStateMock.Setup(mock => mock.Stats).Returns(singleGameStatsMock.Object);
+
             var objectUnderTest = new PlayWar(loggerDouble);
 
             objectUnderTest.War(gameStateMock.Object, warDepth: 1);
@@ -217,6 +224,8 @@ namespace NinetySixSimulator.Tests
             gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToGatherCards), Times.Once());
 
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {winner} wins"));
+            Assert.True(player1WarWinsByDepthTracker[1] == (winner == 1 ? 1 : 0));
+            Assert.True(player2WarWinsByDepthTracker[1] == (winner == 2 ? 1 : 0));
             if (winner == 1)
             {
                 Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"War: {winningCard} vs {losingCard}..."));
@@ -249,6 +258,7 @@ namespace NinetySixSimulator.Tests
         public void WarTestSimpleWar(int winner)
         {
             var loggerDouble = new LoggerDouble<PlayWar>();
+            var singleGameStatsMock = new Mock<ISingleGameStats>();
 
             var winningCard = new Card { Rank = "K", Suit = Constants.Suits.Hearts };
             var losingCard = new Card { Rank = "3", Suit = Constants.Suits.Clubs };
@@ -288,6 +298,12 @@ namespace NinetySixSimulator.Tests
             gameStateMock.Setup(mock => mock.FirstPlayerState).Returns(firstPlayerState);
             gameStateMock.Setup(mock => mock.SecondPlayerState).Returns(secondPlayerState);
 
+            var player1WarWinsByDepthTracker = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0 };
+            var player2WarWinsByDepthTracker = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0 };
+            singleGameStatsMock.Setup(mock => mock.Player1WarWinsByDepth).Returns(player1WarWinsByDepthTracker);
+            singleGameStatsMock.Setup(mock => mock.Player2WarWinsByDepth).Returns(player2WarWinsByDepthTracker);
+            gameStateMock.Setup(mock => mock.Stats).Returns(singleGameStatsMock.Object);
+
             var objectUnderTest = new PlayWar(loggerDouble);
 
             objectUnderTest.War(gameStateMock.Object);
@@ -298,6 +314,8 @@ namespace NinetySixSimulator.Tests
             gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToGatherCards), Times.Once());
 
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player {winner} wins"));
+            Assert.True(player1WarWinsByDepthTracker[1] == (winner == 1 ? 1 : 0));
+            Assert.True(player2WarWinsByDepthTracker[1] == (winner == 2 ? 1 : 0));
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"War: 5♦ vs 5♥..."));
             if (winner == 1)
             {
@@ -332,6 +350,7 @@ namespace NinetySixSimulator.Tests
         public void WarTestSimpleWarWhenBothNeedToShuffle()
         {
             var loggerDouble = new LoggerDouble<PlayWar>();
+            var singleGameStatsMock = new Mock<ISingleGameStats>();
 
             var firstPlayerState = new PlayerGameState
             {
@@ -378,6 +397,10 @@ namespace NinetySixSimulator.Tests
             gameStateMock.Setup(mock => mock.FirstPlayerState).Returns(firstPlayerState);
             gameStateMock.Setup(mock => mock.SecondPlayerState).Returns(secondPlayerState);
 
+            var player1WarWinsByDepthTracker = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0 };
+            singleGameStatsMock.Setup(mock => mock.Player1WarWinsByDepth).Returns(player1WarWinsByDepthTracker);
+            gameStateMock.Setup(mock => mock.Stats).Returns(singleGameStatsMock.Object);
+
             var objectUnderTest = new PlayWar(loggerDouble);
 
             objectUnderTest.War(gameStateMock.Object);
@@ -388,6 +411,7 @@ namespace NinetySixSimulator.Tests
             gameStateMock.Verify(mock => mock.Tick(Constants.GamePlayParameters.TimeToGatherCards), Times.Once());
 
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"Player 1 wins"));
+            Assert.True(player1WarWinsByDepthTracker[1] == 1);
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, $"War: 5♦ vs 5♥..."));
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, "War with depth 0 on this turn."));
             Assert.True(loggerDouble.HasBeenLogged(LogLevel.Debug, "Moving 3 card(s) from gather pile to play pile for player 1..."));

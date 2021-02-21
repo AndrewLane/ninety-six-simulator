@@ -12,6 +12,8 @@ namespace NinetySixSimulator.Services
 
         public bool TimedOut { get; private set; } = false;
 
+        public ISingleGameStats Stats { get; set; } = new SingleGameStats();
+
         public TrackIndividualGameState()
         {
             Random rnd = new Random();

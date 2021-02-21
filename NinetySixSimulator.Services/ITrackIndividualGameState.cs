@@ -13,5 +13,7 @@ namespace NinetySixSimulator.Services
 
         ITrackIndividualGameState InitializeGameState();
         void Tick(TimeSpan time);
+
+        ISingleGameStats Stats { get; set; }
     }
 }
