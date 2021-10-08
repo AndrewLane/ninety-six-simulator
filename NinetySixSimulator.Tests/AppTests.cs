@@ -16,13 +16,15 @@ namespace NinetySixSimulator.Tests
             var loggerDouble = new LoggerDouble<App>();
             var mockConfig = new Mock<IConfiguration>();
             var mockGameplayCoordinator = new Mock<ICoordinateGameplay>();
+            var statsGathererMock = new Mock<IFinalizeStats>();
+            var dummySimulationStats = new Mock<ISimulationStats>();
 
             var configurationSection = new Mock<IConfigurationSection>();
-            //configurationSection.Setup(a => a.Value);
 
             mockConfig.Setup(a => a.GetSection(It.IsAny<string>())).Returns(configurationSection.Object);
+            mockGameplayCoordinator.Setup(mock => mock.Play(It.IsAny<GameParameters>())).Returns(dummySimulationStats.Object);
 
-            var objectUnderTest = new App(mockConfig.Object, loggerDouble, mockGameplayCoordinator.Object);
+            var objectUnderTest = new App(mockConfig.Object, loggerDouble, mockGameplayCoordinator.Object, statsGathererMock.Object);
 
             objectUnderTest.Run();
 
@@ -32,6 +34,7 @@ namespace NinetySixSimulator.Tests
                     && item.SecondPlayerName == "Player 2" &&
                     item.TotalLengthOfSimulation == TimeSpan.FromMinutes(60 * 24)
                    )), Times.Once());
+            statsGathererMock.Verify(mock => mock.GetFinalStats(It.IsAny<GameParameters>(), dummySimulationStats.Object), Times.Once());
         }
 
         [Fact]
@@ -40,6 +43,8 @@ namespace NinetySixSimulator.Tests
             var loggerDouble = new LoggerDouble<App>();
             var mockConfig = new Mock<IConfiguration>();
             var mockGameplayCoordinator = new Mock<ICoordinateGameplay>();
+            var statsGathererMock = new Mock<IFinalizeStats>();
+            var dummySimulationStats = new Mock<ISimulationStats>();
 
             var configurationSection = new Mock<IConfigurationSection>();
             configurationSection.SetupSequence(a => a.Value).Returns("Isaac")
@@ -47,8 +52,9 @@ namespace NinetySixSimulator.Tests
                 .Returns("1");
 
             mockConfig.Setup(a => a.GetSection(It.IsAny<string>())).Returns(configurationSection.Object);
+            mockGameplayCoordinator.Setup(mock => mock.Play(It.IsAny<GameParameters>())).Returns(dummySimulationStats.Object);
 
-            var objectUnderTest = new App(mockConfig.Object, loggerDouble, mockGameplayCoordinator.Object);
+            var objectUnderTest = new App(mockConfig.Object, loggerDouble, mockGameplayCoordinator.Object, statsGathererMock.Object);
 
             objectUnderTest.Run();
 
@@ -58,6 +64,7 @@ namespace NinetySixSimulator.Tests
                     && item.SecondPlayerName == "Daddy" &&
                     item.TotalLengthOfSimulation == TimeSpan.FromMinutes(1)
                    )), Times.Once());
+            statsGathererMock.Verify(mock => mock.GetFinalStats(It.IsAny<GameParameters>(), dummySimulationStats.Object), Times.Once());
         }
     }
 }
