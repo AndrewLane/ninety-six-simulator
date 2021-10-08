@@ -11,12 +11,14 @@ namespace NinetySixSimulator.Services
         private readonly IConfiguration _config;
         private readonly ILogger<App> _logger;
         private readonly ICoordinateGameplay _gamePlayCoordinator;
+        private readonly IFinalizeStats _statsGatherer;
 
-        public App(IConfiguration config, ILogger<App> logger, ICoordinateGameplay gamePlayCoordinator)
+        public App(IConfiguration config, ILogger<App> logger, ICoordinateGameplay gamePlayCoordinator, IFinalizeStats statsGatherer)
         {
             _config = config;
             _logger = logger;
             _gamePlayCoordinator = gamePlayCoordinator;
+            _statsGatherer = statsGatherer;
         }
 
         public void Run()
@@ -28,7 +30,8 @@ namespace NinetySixSimulator.Services
                 SecondPlayerName = _config.GetValue<string>("Player2Name") ?? "Player 2",
                 TotalLengthOfSimulation = TimeSpan.FromMinutes(_config.GetValue<int?>("SimulationMaxMinutes") ?? (60 * 24))
             };
-            _gamePlayCoordinator.Play(gameParams);
+            var stats = _gamePlayCoordinator.Play(gameParams);
+            Console.WriteLine(_statsGatherer.GetFinalStats(gameParams, stats));
         }
     }
 }
