@@ -1,5 +1,4 @@
 using System.Text;
-using Microsoft.Extensions.Logging;
 using NinetySixSimulator.Services.Models;
 
 namespace NinetySixSimulator.Services
@@ -10,7 +9,6 @@ namespace NinetySixSimulator.Services
         public string GetFinalStats(GameParameters gameParams, ISimulationStats stats)
         {
             var totalGames = stats.Player1Wins + stats.Player2Wins + stats.Ties;
-            var player1WinPerc = calculatePercentage(stats.Player1Wins, totalGames);
             var finalResult = $@"
 Finished simulation of {gameParams.TotalLengthOfSimulation:c} of game play between {gameParams.FirstPlayerName} and {gameParams.SecondPlayerName}...
 
