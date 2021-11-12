@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NinetySixSimulator.Services.Models;
+﻿namespace NinetySixSimulator.Services.Models;
 
 public class GameParameters
 {

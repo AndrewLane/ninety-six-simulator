@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NinetySixSimulator.Services;
+﻿namespace NinetySixSimulator.Services;
 
 internal class SystemDateTime : IDateTime
 {

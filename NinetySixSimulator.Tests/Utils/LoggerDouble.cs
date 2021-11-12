@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-
-namespace NinetySixSimulator.Tests.Utils;
+﻿namespace NinetySixSimulator.Tests.Utils;
 
 /// <summary>
 /// Inspired by https://stackoverflow.com/questions/52707702/how-do-you-mock-ilogger-loginformation

@@ -1,6 +1,3 @@
-using System.Text;
-using NinetySixSimulator.Services.Models;
-
 namespace NinetySixSimulator.Services;
 
 public class FinalizeStats : IFinalizeStats

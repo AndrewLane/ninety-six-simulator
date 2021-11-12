@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-using NinetySixSimulator.Services.Models;
-
-namespace NinetySixSimulator.Services;
+﻿namespace NinetySixSimulator.Services;
 
 internal class CoordinateGameplay : ICoordinateGameplay
 {

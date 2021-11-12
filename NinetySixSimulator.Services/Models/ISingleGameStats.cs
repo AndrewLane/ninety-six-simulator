@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace NinetySixSimulator.Services.Models;
 
 public interface ISingleGameStats
