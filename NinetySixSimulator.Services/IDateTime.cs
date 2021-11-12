@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace NinetySixSimulator.Services
+namespace NinetySixSimulator.Services;
+
+public interface IDateTime
 {
-    public interface IDateTime
-    {
-        public DateTime Now { get; }
-    }
+    public DateTime Now { get; }
 }

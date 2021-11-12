@@ -1,19 +1,18 @@
 ﻿using System;
 using NinetySixSimulator.Services.Models;
 
-namespace NinetySixSimulator.Services
+namespace NinetySixSimulator.Services;
+
+public interface ITrackIndividualGameState
 {
-    public interface ITrackIndividualGameState
-    {
-        TimeSpan MaxDuration { get; }
-        PlayerGameState FirstPlayerState { get; set; }
-        PlayerGameState SecondPlayerState { get; set; }
-        bool TimedOut { get; }
-        TimeSpan TimeElapsed { get; }
+    TimeSpan MaxDuration { get; }
+    PlayerGameState FirstPlayerState { get; set; }
+    PlayerGameState SecondPlayerState { get; set; }
+    bool TimedOut { get; }
+    TimeSpan TimeElapsed { get; }
 
-        ITrackIndividualGameState InitializeGameState();
-        void Tick(TimeSpan time);
+    ITrackIndividualGameState InitializeGameState();
+    void Tick(TimeSpan time);
 
-        ISingleGameStats Stats { get; set; }
-    }
+    ISingleGameStats Stats { get; set; }
 }

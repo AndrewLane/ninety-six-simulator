@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace NinetySixSimulator.Services
+namespace NinetySixSimulator.Services;
+
+internal class SystemDateTime : IDateTime
 {
-    internal class SystemDateTime : IDateTime
-    {
-        public DateTime Now => DateTime.Now;
-    }
+    public DateTime Now => DateTime.Now;
 }

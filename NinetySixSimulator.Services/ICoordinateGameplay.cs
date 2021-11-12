@@ -1,9 +1,8 @@
 ﻿using NinetySixSimulator.Services.Models;
 
-namespace NinetySixSimulator.Services
+namespace NinetySixSimulator.Services;
+
+public interface ICoordinateGameplay
 {
-    public interface ICoordinateGameplay
-    {
-        ISimulationStats Play(GameParameters gameParams);
-    }
+    ISimulationStats Play(GameParameters gameParams);
 }

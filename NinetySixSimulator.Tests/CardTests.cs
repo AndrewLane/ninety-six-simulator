@@ -3,30 +3,30 @@ using NinetySixSimulator.Services;
 using NinetySixSimulator.Services.Models;
 using Xunit;
 
-namespace NinetySixSimulator.Tests
+namespace NinetySixSimulator.Tests;
+
+public class CardTests
 {
-    public class CardTests
+    [Fact]
+    public void CardEqualityTest()
     {
-        [Fact]
-        public void CardEqualityTest()
-        {
-            var tenOfClubs = new Card { Rank = "T", Suit = Constants.Suits.Clubs };
-            var tenOfHearts = new Card { Rank = "T", Suit = Constants.Suits.Hearts };
-            Assert.True(tenOfClubs == tenOfHearts);
-        }
+        var tenOfClubs = new Card { Rank = "T", Suit = Constants.Suits.Clubs };
+        var tenOfHearts = new Card { Rank = "T", Suit = Constants.Suits.Hearts };
+        Assert.True(tenOfClubs == tenOfHearts);
+    }
 
-        [Fact]
-        public void CardInequalityTest()
-        {
-            var tenOfClubs = new Card { Rank = "T", Suit = Constants.Suits.Clubs };
-            var nineOfHearts = new Card { Rank = "9", Suit = Constants.Suits.Hearts };
-            Assert.True(tenOfClubs != nineOfHearts);
-        }
+    [Fact]
+    public void CardInequalityTest()
+    {
+        var tenOfClubs = new Card { Rank = "T", Suit = Constants.Suits.Clubs };
+        var nineOfHearts = new Card { Rank = "9", Suit = Constants.Suits.Hearts };
+        Assert.True(tenOfClubs != nineOfHearts);
+    }
 
-        [Fact]
-        public void TestComparisons()
-        {
-            var ascendingArray = new List<Card>
+    [Fact]
+    public void TestComparisons()
+    {
+        var ascendingArray = new List<Card>
             {
                 new Card { Rank = "2", Suit = Constants.Suits.Clubs },
                 new Card { Rank = "3", Suit = Constants.Suits.Clubs },
@@ -42,18 +42,17 @@ namespace NinetySixSimulator.Tests
                 new Card { Rank = "K", Suit = Constants.Suits.Clubs },
                 new Card { Rank = "A", Suit = Constants.Suits.Clubs }
             };
-            for (int i = 0; i < ascendingArray.Count - 1; i++)
-            {
-                Assert.True(ascendingArray[i] < ascendingArray[i + 1]);
-                Assert.True(ascendingArray[i + 1] > ascendingArray[i]);
-            }
-        }
-
-        [Fact]
-        public void TestToString()
+        for (int i = 0; i < ascendingArray.Count - 1; i++)
         {
-            var aceOfSpades = new Card { Rank = "A", Suit = Constants.Suits.Spades };
-            Assert.True(aceOfSpades.ToString() == "A♠");
+            Assert.True(ascendingArray[i] < ascendingArray[i + 1]);
+            Assert.True(ascendingArray[i + 1] > ascendingArray[i]);
         }
+    }
+
+    [Fact]
+    public void TestToString()
+    {
+        var aceOfSpades = new Card { Rank = "A", Suit = Constants.Suits.Spades };
+        Assert.True(aceOfSpades.ToString() == "A♠");
     }
 }

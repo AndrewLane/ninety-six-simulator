@@ -1,9 +1,8 @@
 using NinetySixSimulator.Services.Models;
 
-namespace NinetySixSimulator.Services
+namespace NinetySixSimulator.Services;
+
+public interface IFinalizeStats
 {
-    public interface IFinalizeStats
-    {
-        string GetFinalStats(GameParameters gameParams, ISimulationStats stats);
-    }
+    string GetFinalStats(GameParameters gameParams, ISimulationStats stats);
 }
