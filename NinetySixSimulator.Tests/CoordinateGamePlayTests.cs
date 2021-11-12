@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-using Moq;
-using NinetySixSimulator.Services;
-using NinetySixSimulator.Services.Models;
-using NinetySixSimulator.Tests.Utils;
-using Xunit;
-
-namespace NinetySixSimulator.Tests;
+﻿namespace NinetySixSimulator.Tests;
 
 public class CoordinateGamePlayTests
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Microsoft.Extensions.Logging;
-using NinetySixSimulator.Services.Models;
+﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("NinetySixSimulator.Tests")]
 [assembly: InternalsVisibleTo("ninety-six-simulator")]

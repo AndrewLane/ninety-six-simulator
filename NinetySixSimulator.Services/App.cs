@@ -1,8 +1,3 @@
-using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using NinetySixSimulator.Services.Models;
-
 namespace NinetySixSimulator.Services;
 
 public class App : IApp

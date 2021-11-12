@@ -1,7 +1,4 @@
-﻿using System;
-using NinetySixSimulator.Services.Models;
-
-namespace NinetySixSimulator.Services;
+﻿namespace NinetySixSimulator.Services;
 
 public class TrackIndividualGameState : ITrackIndividualGameState
 {

@@ -1,12 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
-using Moq;
-using NinetySixSimulator.Services;
-using NinetySixSimulator.Services.Models;
-using NinetySixSimulator.Tests.Utils;
-using Xunit;
-
-namespace NinetySixSimulator.Tests;
+﻿namespace NinetySixSimulator.Tests;
 
 public class AppTests
 {
