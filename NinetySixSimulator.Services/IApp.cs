@@ -1,7 +1,6 @@
-﻿namespace NinetySixSimulator.Services
+﻿namespace NinetySixSimulator.Services;
+
+public interface IApp
 {
-    public interface IApp
-    {
-        void Run();
-    }
+    void Run();
 }

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using NinetySixSimulator.Services.Models;
 
-namespace NinetySixSimulator.Services
+namespace NinetySixSimulator.Services;
+
+public interface IPointsCalculator
 {
-    public interface IPointsCalculator
-    {
-        int GetPoints(List<Card> cards);
-    }
+    int GetPoints(List<Card> cards);
 }

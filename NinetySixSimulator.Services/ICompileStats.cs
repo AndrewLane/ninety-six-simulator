@@ -1,9 +1,8 @@
 ﻿using NinetySixSimulator.Services.Models;
 
-namespace NinetySixSimulator.Services
+namespace NinetySixSimulator.Services;
+
+public interface ICompileStats
 {
-    public interface ICompileStats
-    {
-        void UpdateStats(ISimulationStats statsSoFar, ISingleGameStats singleGameStats);
-    }
+    void UpdateStats(ISimulationStats statsSoFar, ISingleGameStats singleGameStats);
 }

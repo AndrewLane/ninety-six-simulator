@@ -4,25 +4,25 @@ using NinetySixSimulator.Services;
 using NinetySixSimulator.Services.Models;
 using Xunit;
 
-namespace NinetySixSimulator.Tests
+namespace NinetySixSimulator.Tests;
+
+public class FinalizeStatsTests
 {
-    public class FinalizeStatsTests
+    [Fact]
+    public void FinalizeStatsWithNoWars()
     {
-        [Fact]
-        public void FinalizeStatsWithNoWars()
+        var objectUnderTest = new FinalizeStats();
+        var dummyGameParams = new GameParameters { FirstPlayerName = "Alice", SecondPlayerName = "Bob", TotalLengthOfSimulation = TimeSpan.FromMinutes(10) };
+        var dummyStats = new SimulationStats
         {
-            var objectUnderTest = new FinalizeStats();
-            var dummyGameParams = new GameParameters { FirstPlayerName = "Alice", SecondPlayerName = "Bob", TotalLengthOfSimulation = TimeSpan.FromMinutes(10) };
-            var dummyStats = new SimulationStats
-            {
-                TotalSimulationTime = TimeSpan.FromMilliseconds(500),
-                ShortestGame = TimeSpan.FromSeconds(90),
-                Player1Wins = 50,
-                Player2Wins = 50,
-                WarsByDepth = new List<int>(),
-            };
-            var result = objectUnderTest.GetFinalStats(dummyGameParams, dummyStats);
-            Assert.Equal(@"
+            TotalSimulationTime = TimeSpan.FromMilliseconds(500),
+            ShortestGame = TimeSpan.FromSeconds(90),
+            Player1Wins = 50,
+            Player2Wins = 50,
+            WarsByDepth = new List<int>(),
+        };
+        var result = objectUnderTest.GetFinalStats(dummyGameParams, dummyStats);
+        Assert.Equal(@"
 Finished simulation of 00:10:00 of game play between Alice and Bob...
 
 Simulation Time: 00:00:00.5000000
@@ -33,24 +33,24 @@ Alice Wins: 50 (50.00000 %)
 Bob Wins: 50 (50.00000 %)
 No wars
 ", result);
-        }
+    }
 
-        [Fact]
-        public void FinalizeStatsManyWars()
+    [Fact]
+    public void FinalizeStatsManyWars()
+    {
+        var objectUnderTest = new FinalizeStats();
+        var dummyGameParams = new GameParameters { FirstPlayerName = "Alice", SecondPlayerName = "Bob", TotalLengthOfSimulation = TimeSpan.FromDays(365) };
+        var dummyStats = new SimulationStats
         {
-            var objectUnderTest = new FinalizeStats();
-            var dummyGameParams = new GameParameters { FirstPlayerName = "Alice", SecondPlayerName = "Bob", TotalLengthOfSimulation = TimeSpan.FromDays(365) };
-            var dummyStats = new SimulationStats
-            {
-                TotalSimulationTime = TimeSpan.FromHours(1),
-                ShortestGame = TimeSpan.FromSeconds(10),
-                Ties = 1000,
-                Player1Wins = 522425,
-                Player2Wins = 521542,
-                WarsByDepth = new List<int> { 0, 100, 200, 300, 400, 500, 600, 700 },
-            };
-            var result = objectUnderTest.GetFinalStats(dummyGameParams, dummyStats);
-            Assert.Equal(@"
+            TotalSimulationTime = TimeSpan.FromHours(1),
+            ShortestGame = TimeSpan.FromSeconds(10),
+            Ties = 1000,
+            Player1Wins = 522425,
+            Player2Wins = 521542,
+            WarsByDepth = new List<int> { 0, 100, 200, 300, 400, 500, 600, 700 },
+        };
+        var result = objectUnderTest.GetFinalStats(dummyGameParams, dummyStats);
+        Assert.Equal(@"
 Finished simulation of 365.00:00:00 of game play between Alice and Bob...
 
 Simulation Time: 01:00:00
@@ -68,6 +68,5 @@ Bob Wins: 521,542 (49.90990 %)
 700 septuple war(s)
 
 ", result);
-        }
     }
 }
